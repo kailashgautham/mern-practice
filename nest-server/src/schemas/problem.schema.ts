@@ -3,16 +3,37 @@ import { HydratedDocument } from 'mongoose';
 
 export type ProblemDocument = HydratedDocument<Problem>;
 
+@Schema({_id: false})
+class LanguageVersion {
+  @Prop()
+  language: string;
+
+  @Prop()
+  version: string;
+}
+
+@Schema({_id: false})
+class File {
+  @Prop()
+  path: string;
+
+  @Prop()
+  content: string;
+}
+
 @Schema()
 export class Problem {
   @Prop()
-  name: string;
+  user_id: string;
 
   @Prop()
-  title: string;
+  language_version: LanguageVersion;
 
   @Prop()
-  code: string;
+  files: File[];
+
+  @Prop()
+  problem_id: string;
 }
 
 export const ProblemSchema = SchemaFactory.createForClass(Problem);

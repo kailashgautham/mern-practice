@@ -9,12 +9,19 @@ export class ProblemService {
 
     constructor(@InjectModel(Problem.name) private problemModel: Model<Problem>) {}
     
-    async create(createProblemDto: CreateProblemDto): Promise<Problem> {
+    async getFeedback(createProblemDto: CreateProblemDto): Promise<string> {
         const newProblem = new this.problemModel(createProblemDto);
-        return newProblem.save();
+        newProblem.save();
+        const feedback = await fetch("https://api.codaveri.com/feedback", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": process.env.api_key || '',
+            },
+            body: JSON.stringify(createProblemDto)
+        });
+        return await feedback.json();
     }
 
-    getProblems(): Promise<Problem[]> {
-        return this.problemModel.find().exec();
-    }
 }

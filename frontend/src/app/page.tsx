@@ -7,18 +7,30 @@ export default function Home() {
   const [name, setName] = React.useState("");
   const [title, setTitle] = React.useState("");
   const [code, setCode] = React.useState("");
-  const [problems, setProblems] = React.useState<any[]>([]);
-  
+  const [feedback, setFeedback] = React.useState("");
+
   async function handleSubmit(event: { preventDefault: () => void; }) {
     setName("");
     setTitle("");
     setCode("");
+    setFeedback("");
     event.preventDefault();
+
     let data = {
-      name,
-      title,
-      code
+      "user_id": "92352",
+      "language_version": {
+        "language": "python",
+        "version": "3.10"
+      },
+      "files": [
+        {
+          "path": "template.py",
+          "content": code
+        }
+      ],
+      "problem_id": "63af1c2a5134b70f90af04ed"
     }
+
     await fetch("http://localhost:3000/api", {
       method: "POST",
       mode: "cors",
@@ -26,26 +38,17 @@ export default function Home() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data)
-    });
-    handleProblems(event);
-  }
-
-  async function handleProblems(event: { preventDefault: () => void; }) {
-    event.preventDefault();
-    const response = await fetch("http://localhost:3000/api", {
-      method: "GET",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      }
-    });
-    setProblems(await response.json());
-
+    })
+      .then(response => response.json())
+      .then(feedback => {
+        console.log(feedback)
+        setFeedback(feedback["data"]["feedback_files"][0]["feedback_lines"][0]["feedback"]);
+      });
   }
 
   return (
     <main className="h-screen">
-      <form className="flex flex-col items-center p">
+      <form className="flex flex-col items-center">
         <input
           type="text"
           className="border-2 border-gray-300 p-2 rounded-lg mt-10 text-black"
@@ -70,20 +73,9 @@ export default function Home() {
         <button className="bg-blue-500 text-white p-2 rounded-lg mt-10" onClick={handleSubmit}>
           Submit
         </button>
-        <button className="bg-blue-500 text-white p-2 rounded-lg mt-10" onClick={handleProblems}>
-          Fetch Problems
-        </button>
       </form>
-      <div className="flex flex-col items-center p pt-10">
-        {
-          problems.map(problem => {
-            return (
-              <div className="text-black">
-                <p>Name: {problem.name}, Title: {problem.title}, Code: {problem.code}</p>
-              </div>
-            )
-          })
-        }
+      <div className="flex flex-col items-center mt-10">
+        <p className="text-black">{feedback}</p>
       </div>
     </main>
   );

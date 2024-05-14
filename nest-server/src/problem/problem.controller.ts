@@ -9,12 +9,7 @@ export class ProblemController {
     constructor(private problemService: ProblemService) {}
 
     @Post()
-    addProblem(@Body() problem: CreateProblemDto): Promise<Problem> {
-        return this.problemService.create(problem);
-    }
-
-    @Get()
-    getProblems(): Promise<Problem[]> {
-        return this.problemService.getProblems();
+    addProblem(@Body() createProblemDto: CreateProblemDto): Promise<string> {
+        return this.problemService.getFeedback(createProblemDto);
     }
 }
