@@ -5,34 +5,34 @@ export type ProblemDocument = HydratedDocument<Problem>;
 
 @Schema({_id: false})
 class LanguageVersion {
-  @Prop()
+  @Prop({ required: true })
   language: string;
 
-  @Prop()
+  @Prop({ required: true })
   version: string;
 }
 
 @Schema({_id: false})
 class File {
-  @Prop()
+  @Prop({ required: true })
   path: string;
 
-  @Prop()
+  @Prop({ required: true })
   content: string;
 }
 
 @Schema()
 export class Problem {
-  @Prop()
+  @Prop({ required: true })
   user_id: string;
 
-  @Prop()
+  @Prop({ required: true })
   language_version: LanguageVersion;
 
-  @Prop()
+  @Prop({ required: true })
   files: File[];
 
-  @Prop()
+  @Prop({ required: true })
   problem_id: string;
 }
 

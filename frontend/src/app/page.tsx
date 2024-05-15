@@ -28,7 +28,7 @@ export default function Home() {
           "content": code
         }
       ],
-      "problem_id": "63af1c2a5134b70f90af04ed"
+      "problem_id": "640aef269dec6b02d871efd8"
     }
 
     await fetch("http://localhost:3000/api", {
@@ -41,9 +41,13 @@ export default function Home() {
     })
       .then(response => response.json())
       .then(feedback => {
-        console.log(feedback)
-        setFeedback(feedback["data"]["feedback_files"][0]["feedback_lines"][0]["feedback"]);
-      });
+        setFeedback(feedback);
+      })
+      .catch(e => {
+        setFeedback("Sorry, there was an error. Please try again!");
+        console.log(e);
+      })
+      ;
   }
 
   return (
