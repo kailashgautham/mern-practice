@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CreateProblemDto } from './dto/create-problem.dto';
 import { ProblemService } from './problem.service';
-import { Problem } from 'src/schemas/problem.schema';
+import { Problem } from 'src/problem/schemas/problem.schema';
 
 @Controller('api')
 export class ProblemController {
